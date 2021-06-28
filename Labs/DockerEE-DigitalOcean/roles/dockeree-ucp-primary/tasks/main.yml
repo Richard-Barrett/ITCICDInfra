@@ -1,0 +1,18 @@
+---
+- name: "Pull UCP image"
+  command: docker pull docker/ucp:{{ docker_ucp_version }}
+  changed_when: false
+
+- name: "Test if UCP primary controller already exists"
+  uri:
+    url: "https://localhost:{{ docker_ucp_port }}/_ping"
+    validate_certs: no
+  register: ucp_primary
+  ignore_errors: yes
+
+- name: "UCP args dump"
+  debug:
+    msg: "install --host-address {{ ansible_default_ipv4['address'] }} {{ docker_external_cert }} --san {{ ansible_fqdn }} {{ docker_ucp_fqdn_san }} --admin-password {{ docker_ucp_admin_password }} --admin-username admin {{ docker_ucp_cni_args }} --controller-port {{ docker_ucp_port }} --debug"
+- name: "Install UCP"
+  command: docker container run --rm --name ucp -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/docker_subscription.lic:/config/docker_subscription.lic docker/ucp:{{ docker_ucp_version }} install --host-address {{ ansible_default_ipv4['address'] }} {{ docker_external_cert }} --san {{ ansible_fqdn }} {{ docker_ucp_fqdn_san }} --admin-password {{ docker_ucp_admin_password }} --admin-username admin {{ docker_ucp_cni_args }} --controller-port {{ docker_ucp_port }} --debug
+  when: ucp_primary.status != 200
