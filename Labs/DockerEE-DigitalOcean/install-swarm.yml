@@ -1,0 +1,40 @@
+---
+
+- hosts: managers,workers
+  tasks:
+  - name: "get docker info"
+    shell: docker info
+    register: docker_info
+    changed_when: False
+  - name: Declare the address of the first Swarm manager as a fact.
+    set_fact:
+      swarm_manager_address: "{{ ansible_eth0['ipv4']['address'] }}:2377"
+    when: inventory_hostname == groups['managers'][0]
+  - name: Distribute the fact containing address of the first Swarm manager.
+    set_fact:
+      swarm_manager_address: "{{ hostvars[groups['managers'][0]]['swarm_manager_address'] }}"
+    when: inventory_hostname != groups['managers'][0]
+
+# swarm manager já existe (ucp)
+  - name: "get docker swarm worker token"
+    shell: docker swarm join-token -q worker
+    register: worker_token
+    changed_when: False
+    when: inventory_hostname == groups['managers'][0]
+
+  - name: "join swarm as a worker"
+    shell: "docker swarm join --token {{ hostvars[groups['managers'][0]]['worker_token']['stdout'] }} {{ swarm_manager_address }}"
+    when: "docker_info.stdout.find('Swarm: active') == -1 and inventory_hostname in groups['workers']"
+    retries: 3
+    delay: 20
+
+  - name: "get docker node list"
+    shell: docker node ls
+    register: docker_nodes
+    changed_when: False
+    when: inventory_hostname == groups['managers'][0]
+
+  - name: Debug join cluster
+    debug:
+      var: docker_nodes
+    when: inventory_hostname == groups['managers'][0]
