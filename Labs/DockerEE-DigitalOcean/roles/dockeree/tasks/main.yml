@@ -1,0 +1,49 @@
+---
+- name: Docker | EE | Check Requirements
+  fail:
+    msg: "Variable docker_ee_url is required and is not defined."
+  when:
+    - docker_ee_url is not defined
+
+- name: Docker | EE | Store Docker EE repository URL
+  copy:
+    content: "{{ docker_ee_url }}/centos"
+    dest: /etc/yum/vars/dockerurl
+
+- name: Docker | EE | YUM | Install yum-utils
+  yum: name=yum-utils
+
+- name: Docker | EE | YUM | Install device-mapper-persistent-data
+  yum: name=device-mapper-persistent-data
+
+- name: Docker | EE | YUM | Install lvm2
+  yum: name=lvm2
+
+- name: Docker | EE | YUM | Deploy repository
+  shell: "yum-config-manager --add-repo {{ docker_ee_url }}/centos/docker-ee.repo"
+  args:
+    creates: /etc/yum.repos.d/docker-ee.repo
+
+- name: Docker | EE | YUM | Remove older Docker installations
+  yum:
+    name: ['docker', 'docker-client', 'docker-client-latest', 'docker-common', 'docker-latest', 'docker-latest-logrotate', 'docker-logrotate', 'docker-engine', 'docker-ce']
+    state: absent
+
+- name: Docker | EE | YUM | Install Docker Application
+  yum: name=docker-ee state=present enablerepo=docker-ee-stable-18.09
+  notify: Docker | Restart Docker
+
+- name: Create systemd config dir
+  file: path=/etc/systemd/system/docker.service.d/ state=directory
+
+- name: Create mount propagation config
+  copy:
+    dest: /etc/systemd/system/docker.service.d/mount_propagation_flags.conf
+    content: |
+      [Service]
+      MountFlags=shared
+  notify: Docker | Restart Docker
+
+- name: Docker | Ensure service starts at boot
+  service: name=docker enabled=yes
+
