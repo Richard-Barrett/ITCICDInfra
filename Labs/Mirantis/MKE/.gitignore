@@ -1,0 +1,17 @@
+babyswarm.auto.tfvars
+backend.tf
+letsencrypt/
+.terraform/
+.vscode/
+**/*.backup
+**/*.retry
+*.pem
+*.old
+docker_env.sh
+*.tfstate
+storageos/
+ansible-hosts
+docker_subscription.lic
+ucp-bundle/
+digitalocean-secret.yml
+cafe-secret.yaml
