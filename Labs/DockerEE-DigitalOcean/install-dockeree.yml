@@ -1,0 +1,7 @@
+- hosts: all
+  become: yes
+  tasks:
+    - include_role:
+        name: dockeree
+      vars:
+        docker_ee_url: 'https://storebits.docker.com/ee/centos/sub-a2835aa2-1b74-406e-8134-3d50cbee55e2'
