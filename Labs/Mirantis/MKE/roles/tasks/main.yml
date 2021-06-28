@@ -1,0 +1,132 @@
+---
+# file: roles/common/tasks/main.yml
+
+- name: Install Mirantis Kubernetes Engine MKE 
+  connection: ansible.netcommon.network_cli
+  gather_facts: false
+  hosts: all
+  tasks:
+
+    - name: Check for SSH Access
+      debug:
+        msg: ""
+        
+    - name: Check for Hostname and OS
+      debug:
+      
+    - name: Check for Firewalld and SeLinux Enablement (default is enabled)
+      debug:
+      
+    - name: Configure Initial User Access for User dockeradmin
+      debug:
+      
+    - name: Configure NTP
+      debug:
+      
+    - name: Configure DNS
+      debug:
+      
+    - name: Install All Upates
+      debug:
+      
+    - name: Install Mirantis MCR/Docker 
+      debug:
+      
+    - name: Configure Mirantis MCR/Docker
+      debug:
+      
+    - name: Pull MKE Images
+      debug: 
+
+    - name: Display the config
+      debug:
+        msg: "The hostname is {{ ansible_net_hostname }} and the OS is {{ ansible_net_version }}"
+        
+- name: Initialize Mirantis Kubernetes Engine MKE on Leader Node
+  connection: ansible.netcommon.network_cli
+  gather_facts: false
+  hosts: leader_node
+  tasks:
+
+    - name: Configure FirewallD Open Ports for Firewalld for Leader/Manager Nodes
+      debug:
+      
+    - name: Configure NTP
+      debug:
+      
+    - name: Configure DNS
+      debug:
+      
+    - name: Install All Upates
+      debug:
+      
+    - name: Install Mirantis MCR/Docker 
+      debug:
+      
+    - name: Configure Mirantis MCR/Docker
+      debug:
+      
+    - name: Initialize Docker Swarm
+      debug:
+    
+    - name: Create Required Directories in /tmp/mirantis_mke_cluster_local/
+    
+    - name: Create Join Token for Manager Nodes and store in /tmp/mirantis_mke_cluster_local/nodes/managers/manager.token
+      debug:
+      
+    - name: Create Join Token for Worker Nodes and store in /tmp/mirantis_mke_cluster_local/nodes/workers/worker.token
+      debug:
+      
+    - name: Configure IP-in-IP Traffic
+      debug:
+      
+    - name: Pull MKE Images
+      debug: 
+
+    - name: Display the config
+      debug:
+        msg: "The hostname is {{ ansible_net_hostname }} and the OS is {{ ansible_net_version }}"
+
+- name: Initialize Mirantis Kubernetes Engine MKE on Manager Nodes
+  connection: ansible.netcommon.network_cli
+  gather_facts: false
+  hosts: all_manager_nodes
+  tasks:
+  
+    - name: Configure FirewallD Open Ports for Firewalld for Leader/Manager Nodes
+      debug:
+      
+    - name: Configure Mirantis MCR/Docker
+      debug:
+      
+    - name: Configure IP-in-IP Traffic
+      debug:
+      
+    - name: Pull MKE Images
+      debug: 
+
+    - name: Display the config
+      debug:
+        msg: "The hostname is {{ ansible_net_hostname }} and the OS is {{ ansible_net_version }}"
+  
+- name: Initialize Mirantis Kubernetes Engine MKE on Worker Nodes
+  connection: ansible.netcommon.network_cli
+  gather_facts: false
+  hosts: all_worker_nodes
+  tasks:
+  
+    - name: Configure FirewallD Open Ports for Firewalld for Worker Nodes
+      debug:
+      
+    - name: Configure Mirantis MCR/Docker
+      debug:
+      
+    - name: Configure IP-in-IP Traffic
+      debug:
+      
+    - name: Pull MKE Images
+      debug: 
+
+    - name: Display the config
+      debug:
+        msg: "The hostname is {{ ansible_net_hostname }} and the OS is {{ ansible_net_version }}"
