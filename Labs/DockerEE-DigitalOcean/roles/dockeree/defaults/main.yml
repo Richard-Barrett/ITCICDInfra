@@ -1,0 +1,6 @@
+---
+# defaults for docker ee
+#docker_edition: ee
+#docker_ee_version: 17.06
+# docker_ee_url : xxxxxx
+# docker_ee_url: https://storebits.docker.com/ee/centos/sub-a2835aa2-1b74-406e-8134-3d50cbee55e2
