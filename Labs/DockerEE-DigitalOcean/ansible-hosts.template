@@ -1,0 +1,10 @@
+#
+# DOMAIN will be replaced by setdomain.sh script
+#
+
+[managers]
+do-manager.DOMAIN ansible_user=root
+
+[workers]
+do-worker1.DOMAIN ansible_user=root
+do-worker2.DOMAIN ansible_user=root
