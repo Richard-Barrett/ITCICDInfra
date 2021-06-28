@@ -1,0 +1,11 @@
+---
+# defaults for docker ee
+docker_edition: ee
+docker_ucp_version: 3.1.1
+docker_ucp_admin_password: admin1234
+#docker_ucp_fqdn_san: --san ucp.devops.mycompany.com
+docker_ucp_fqdn_san:
+#docker_external_cert: --external-server-cert
+docker_external_cert:
+docker_ucp_port: 443
+docker_ucp_cni_args:
