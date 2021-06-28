@@ -1,0 +1,13 @@
+# api token (digital ocean)
+do_token = "YOUR-DIGITAL-OCEAN-TOKEN-HERE"
+
+# root ssh keys (authorized_keys) - WORK ONLY ON DROPLET CREATION
+# these are the fingerprints as seen on D.O. security page
+ssh_keys = []
+
+# Images:
+do_image = "centos-7-x64"
+
+# DO domain
+domain_name = "DOMAIN"
+swarm-prefix = "do"
