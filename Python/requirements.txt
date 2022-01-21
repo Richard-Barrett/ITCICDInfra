@@ -81,7 +81,7 @@ idna==2.7
 importlib-metadata==0.23
 incremental==17.5.0
 ipaddress==1.0.22
-ipython==5.7.0
+ipython==7.16.3
 ipython-genutils==0.2.0
 iso8601==0.1.12
 itsdangerous==1.1.0
